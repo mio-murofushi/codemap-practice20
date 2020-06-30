@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            cookie
+        </title>
+    </head>
+    <body>
+        {% if first_mes %}
+            <p>初めてのアクセスです。</p>
+        {% endif %}
+        {% if re_mes %}
+            <p>合計{{ count }}回目のアクセスです。</p>
+        {% endif %}
+        
+        <p>{{ nowlogin }}（現在日時）</p>
+        {% if lastlogin %}
+            <p>{{ lastlogin }}（前回のアクセス日時）</p>
+        {% endif %}
+        
+        <form method="POST">
+            <button type="button" value="del">履歴削除</button>
+        </form>
+    </body>
+</html>
