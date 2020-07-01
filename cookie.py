@@ -59,13 +59,39 @@ def sample_cookie():
     #return render_template("cookie.html", **params)
     return response
 
-@app.route("/session")
+@app.route("/session", methods=["POST","GET"])
 def sample_session():
+    first_mes=""
+    re_mes=""
+
     count = session.get('count')
+    lastlog = session.get("nowlog", "")
+    nowlog = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
+    
     if count is None:
         count = 1
+        first_mes=count
     else:
         count = int(count) + 1
-    session["count"] = count
+        re_mes = count
+    
+    # del ボタンが押された場合
+    if "del" in request.form.keys():
+        session["count"] = None
+        session["lastlog"] = ""
+        session["nowlog"] = ""
+    else:
+        session["count"] = count
+        session["nowlog"] = nowlog
+        session["lastlog"] = lastlog
+    
+    params = {
+        "first_mes":first_mes,
+        "re_mes":re_mes,
+        "count":count,
+        "nowlog":nowlog,
+        "lastlog":lastlog
+    }
 
-    return "{}回目の訪問です。".format(count)
+    response = make_response(render_template("session.html", **params))
+    return response
